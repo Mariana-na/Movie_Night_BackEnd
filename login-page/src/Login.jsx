@@ -9,7 +9,7 @@ const Login = () => {
     // Handle login logic here (e.g., send data to the backend for authentication)
     console.log("Email:", email);
     console.log("Password:", password);
-    // You can replace the console.log with an actual login API call here.
+   
   };
 
   return (
