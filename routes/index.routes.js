@@ -9,9 +9,27 @@ router.get("/", (req, res, next) => {
   res.json("All good in here");
 });
 
+router.get("/signup", (req, res, next) => {
+  res.json("All good in here");
+});
+
 router.get("/login", (req, res, next) => {
   res.json("All good in here");
 });
+
+router.get("/profile", (req, res, next) => {
+  res.json("All good in here");
+});
+
+router.get("/eventCreation", (req, res, next) => {
+  res.json("All good in here");
+});
+
+router.get("/eventDetails", (req, res, next) => {
+  res.json("All good in here");
+});
+
+
 
 
 
