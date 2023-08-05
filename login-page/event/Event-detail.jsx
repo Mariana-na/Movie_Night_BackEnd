@@ -1,1 +1,0 @@
-<h1>Here is Event Detail Page</h1>

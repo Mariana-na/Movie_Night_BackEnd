@@ -19,7 +19,7 @@ router.post("/signup", async (req, res) => {
     const newUser = await User.create({
       email: payload.email,
       password: passwordHash,
-      username: payload.username,
+      firstname: payload.firstname,
     });
     res.status(201).json({ message: "User created" });
   } catch (error) {
@@ -30,18 +30,16 @@ router.post("/signup", async (req, res) => {
 
 // --------- SIGN IN ROUTE ---------
 
-router.post("/login", async (rec, res) => {
+router.post("/login", async (req, res) => {
   const payload = req.body;
-  const potentialUser = await User.find({ email: payload.email });
+  const potentialUser = await User.findOne({ email: payload.email });
   if (potentialUser) {
     const passwordsMatch = bcrypt.compareSync(
       payload.password,
       potentialUser.password
     );
     if (passwordsMatch) {
-      const authtoken =
-        jwt -
-        sign({ userId: potentialUser._id }, process.env.TOKEN_SECRET, {
+      const authToken = jwt.sign({ userId: potentialUser._id }, process.env.TOKEN_SECRET, {
           algorithm: "HS256",
           expiresIn: "6h",
         });
