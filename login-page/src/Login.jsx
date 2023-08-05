@@ -6,7 +6,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic here (e.g., send data to the backend for authentication)
+   
     console.log("Email:", email);
     console.log("Password:", password);
    
