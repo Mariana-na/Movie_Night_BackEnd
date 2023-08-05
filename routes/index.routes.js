@@ -9,6 +9,9 @@ router.get("/", (req, res, next) => {
   res.json("All good in here");
 });
 
+router.get("/login", (req, res, next) => {
+  res.json("All good in here");
+});
 
 
 
