@@ -62,6 +62,22 @@ router.get("/verify", isAuthenticated, async (req, res) => {
 
 })
 
+//-------------- LOGOUT ROUTE --------------------
+
+router.post("/logout", (req, res) => {
+  const expiredToken = req.headers.authorization.split(" ")[1];
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error clearing session:", err);
+      res.status(500).json({ message: "Logout failed" });
+      
+    } else {
+      
+      res.status(200).json({message: "Logout successful"});
+    }
+  })
+})
+
 
 
 
