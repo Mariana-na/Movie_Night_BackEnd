@@ -13,7 +13,6 @@ const feedbackSchema = new Schema({
     type: String,
     required: true,
   },
-// attending/not attending will be fetched from the User model using the the userId
 
 });
 
