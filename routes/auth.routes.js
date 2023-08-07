@@ -7,7 +7,7 @@ const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 router.use(express.json());
 
-// --------- SIGN IN ROUTE ---------
+// --------- SIGN UP ROUTE ---------
 
 
 router.post("/signup", async (req, res) => {
