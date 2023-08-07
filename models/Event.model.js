@@ -1,42 +1,42 @@
 const { Schema, model } = require("mongoose");
 
-const eventSchema = new Schema(
-  {
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: [true, 'User ID is required.'],
-    },
-    dateTime: {
-      type: Date,
-      required: [true, 'Date and time are required.'],
-    },
-    location: {
-      type: String,
-      required: [true, 'Location is required.'],
-    },
-    movieChosen: {
-      type: String,
-      required: [true, 'Movie chosen is required.'],
-    },
-    mealChosen: {
-      type: String,
-      required: [true, 'Meal chosen is required.'],
-    },
-    // API data for meal and movie
-    movieData: {
-      type: Schema.Types.Mixed,
-      required: [true, 'Movie data from the API is required.'],
-    },
-    mealData: {
-      type: Schema.Types.Mixed,
-      required: [true, 'Meal data from the API is required.'],
-    }
+const eventSchema = new Schema({
+  eventName: {
+    type: String,
+    required: true,
+    trim: true,
   },
-  {
-    timestamps: true,
-  }
-);
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
+  filmId: {
+    type: String,
+  },
+  recipeId: {
+    type: String,
+  },
+  eventDate: {
+    type: String,
+    required: true,
+  },
+  eventLocation: {
+    type: String,
+    required: true,
+  },
+  attending: {
+    type: Number,
+    default: 0,
+  },
+  notAttending: {
+    type: Number,
+    default: 0,
+  },
+  attendees: {
+    type: [String],
+    required: true,
+  },
+});
 
 const Event = model("Event", eventSchema);
 
