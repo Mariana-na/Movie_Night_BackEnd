@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User.model");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
-isAuthenticated
 
 router.use(express.json());
 
@@ -39,11 +38,17 @@ router.post("/login", async (req, res) => {
       potentialUser.password
     );
     if (passwordsMatch) {
-      const authToken = jwt.sign({ userId: potentialUser._id }, process.env.TOKEN_SECRET, {
-          algorithm: "HS256",
+      const authToken = jwt.sign (
+        {
           expiresIn: "6h",
-        });
-      res.status(202).json({ token: authToken });
+          user: potentialUser._id,
+        },
+        process.env.TOKEN_SECRET,
+        {
+          algorithm: "HS256",
+        }
+      )
+      res.status(202).json(authToken);
     } else {
       res.status(403).json({ errorMessage: "Password invalid" });
     }
@@ -55,10 +60,10 @@ router.post("/login", async (req, res) => {
 // --------- TOKEN VERIFICATION ROUTE ---------
 
 router.get("/verify", isAuthenticated, async (req, res) => {
-    console.log("req payload:", req.payload)
-    const currentUser = await User.findById(req.payload.userId)
-    currentUser.password = '****';
-    res.status(200).json({message: 'Token is valid', currentUser})
+  console.log("req payload:", req.payload)
+  const currentUser = await User.findById(req.payload.user)
+  currentUser.password = '****';
+  res.status(200).json({ message: 'Token is valid', currentUser })
 
 })
 
