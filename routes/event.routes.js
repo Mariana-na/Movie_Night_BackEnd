@@ -14,6 +14,7 @@ router.post("/createEvent", async (req, res) => {
           eventLocation: payload.where,
           //attendees: payload.who,
           recipeId: payload.randomMeal.idMeal,
+          userId: payload.userId,
         });
         res.status(201).json(newEvent);
 
