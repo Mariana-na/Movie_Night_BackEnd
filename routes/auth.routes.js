@@ -27,7 +27,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-// --------- SIGN IN ROUTE ---------
+// --------- LOG IN ROUTE ---------
 
 router.post("/login", async (req, res) => {
   const payload = req.body;
