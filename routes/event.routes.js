@@ -1,6 +1,7 @@
 const express = require ("express");
 const router = express.Router();
 const Event = require("../models/Event.model");
+const Movie = require("../models/Movie.model");
 
 //------------------------------CREATE EVENT ROUTE-------------------
 
@@ -48,6 +49,20 @@ router.delete("/:eventId", async (req, res) => {
         res.status(500).json("error deleting event", error);
     }
 })
+
+
+// ------ RANDOM FILM ROUTE --------
+
+router.get("/randomMovie", async (req, res) => {
+    console.log("req data:", req.body)
+    const randomMovie = await Movie.findOne()
+      // .skip(
+      // Math.floor(Math.random() * (await Movie.countDocuments()))
+    // );
+    res.status(200).json({ message: 'Token is valid' })
+  
+  })
+  
 
 //--------------------ATTENDING/NOT ATTENDING ROUTES--------------------
 
