@@ -4,14 +4,22 @@ const Event = require("../models/Event.model");
 const Movie = require("../models/Movie.model");
 
 //------------------------------CREATE EVENT ROUTE-------------------
-
-router.post("/event", async (req, res) => {
+//meaningless change
+router.post("/createEvent", async (req, res) => {
+    const payload = req.body;
     try {
-        const newEvent = await Event.create(req.body);
+        const newEvent = await Event.create({
+            eventName: payload.eventName,
+            eventDate: payload.when,
+          eventLocation: payload.where,
+          //attendees: payload.who,
+          recipeId: payload.randomMeal.idMeal,
+        });
         res.status(201).json(newEvent);
 
     } catch (error) {
-        res.status(500).json(error);
+        console.log(error)
+       //res.status(500).json(error);
     }
 })
 
