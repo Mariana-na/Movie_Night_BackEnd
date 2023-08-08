@@ -38,6 +38,18 @@ router.put("/:eventId", async (req, res) => {
     }
 })
 
+//----------------------POST NEW COMMENT ON EVENT ROUTE--------------------
+
+router.put("/:eventId/:feedbackId", async (req, res) => {
+    try {
+        const {eventId, feedbackId} = req.params;
+        const eventWithComment = await Event.findByIdAndUpdate(eventId, {$push: {feedback: feedbackId}});
+        res.status(200).json({ message: 'Feedback added to event' });
+    } catch (error) {
+        res.status(500).json("error adding comment to event", error);
+    }
+})
+
 //--------------------DELETE EVENT ROUTE---------------------------------
 
 router.delete("/:eventId", async (req, res) => {

@@ -4,9 +4,12 @@ const Feedback = require ("../models/Feedback.model");
 
 //-------------------------CREATE COMMENT ROUTE-------------------
 
-router.post("/feedback", async (req, res) => {
+router.post("/:eventId/feedback", async (req, res) => {
     try {
-        const newComment = await Feedback.create(req.body);
+        const {eventId} = req.params;
+        const {text} = req.body;
+
+        const newComment = await Feedback.create({text});
         res.status(201).json(newComment);
 
     } catch (error) {
