@@ -29,6 +29,11 @@ router.post("/createEvent", async (req, res) => {
 router.get("/:eventId", async (req, res) => {
     try {
         const event = await Event.findById(req.params.eventId);
+
+        if (!event) {
+            // Event not found, respond with 404 status code
+            return res.status(404).json({ error: "Event not found" });
+        }
         res.status(200).json(event);
 
     } catch (error) {
