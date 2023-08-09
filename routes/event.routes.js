@@ -4,7 +4,7 @@ const Event = require("../models/Event.model");
 const Movie = require("../models/Movie.model");
 
 //------------------------------CREATE EVENT ROUTE-------------------
-//meaningless change
+
 router.post("/createEvent", async (req, res) => {
     const payload = req.body;
     try {
