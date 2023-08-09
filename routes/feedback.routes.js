@@ -4,18 +4,17 @@ const Feedback = require ("../models/Feedback.model");
 
 //-------------------------CREATE COMMENT ROUTE-------------------
 
-router.post("/:eventId/feedback", async (req, res) => {
-    try {
-        const {eventId} = req.params;
-        const {text} = req.body;
-
-        const newComment = await Feedback.create({text});
-        res.status(201).json(newComment);
-
-    } catch (error) {
-        res.status(500).json("error creating new comment", error);
-    }
-})
+router.post("/:eventId", async (req, res) => {
+  try {
+    const { eventId } = req.params;
+    const { comment, userId } = req.body;
+    const newComment = await Feedback.create({ eventId, comment, userId });
+    res.status(201).json(newComment);
+  } catch (error) {
+      console.log(error);
+    res.status(500).json("error creating new comment", error);
+  }
+});
 
 //---------------------------DISPLAY COMMENT ROUTE--------------------
 
