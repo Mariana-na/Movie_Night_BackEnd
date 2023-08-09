@@ -2,32 +2,38 @@ const express = require("express");
 const router = express.Router();
 const Event = require("../models/Event.model");
 const Movie = require("../models/Movie.model");
+const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 //------------------------------CREATE EVENT ROUTE-------------------
 
 router.post("/createEvent", async (req, res) => {
-  const payload = req.body;
-  try {
-    const newEvent = await Event.create({
-      eventName: payload.eventName,
-      eventDate: payload.when,
-      eventLocation: payload.where,
-      //attendees: payload.who,
-      recipeId: payload.randomMeal.idMeal,
-      userId: payload.userId,
-    });
-    res.status(201).json(newEvent);
-  } catch (error) {
-    console.log(error);
-    //res.status(500).json(error);
-  }
-});
+
+    const payload = req.body;
+    try {
+        const newEvent = await Event.create({
+            eventName: payload.eventName,
+            eventDate: payload.when,
+          eventLocation: payload.where,
+          //attendees: payload.who,
+          recipeId: payload.randomMeal.idMeal,
+          userId: payload.userId,
+        });
+        res.status(201).json(newEvent);
+
+    } catch (error) {
+        res.status(500).json(error);
+    }
+})
+
 
 //---------------------------SHOW AN EVENT ROUTE------------------------
 
 router.get("/:eventId", async (req, res) => {
-  try {
-    const event = await Event.findById(req.params.eventId);
+
+    try {
+        const event = await Event.findById(req.params.eventId);
+        res.status(200).json(event);
+
 
     if (!event) {
       // Event not found, respond with 404 status code
@@ -42,27 +48,24 @@ router.get("/:eventId", async (req, res) => {
 //--------------------EDIT EVENT ROUTE----------------------------------
 
 router.put("/:eventId", async (req, res) => {
-  try {
-    const eventId = req.params.eventId;
-    const updatedEventData = req.body;
 
-    const updatedEvent = await Event.findByIdAndUpdate(
-      eventId,
-      updatedEventData,
-      { new: true }
-    );
-    res.status(202).json(updatedEvent);
-  } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ error: "Error updating event", message: error.message });
-  }
-});
+    try {
+
+        const eventId = req.params.eventId;
+        const updatedEventData = req.body;
+
+        const updatedEvent = await Event.findByIdAndUpdate(eventId, updatedEventData, {new:true});
+        res.status(202).json(updatedEvent);
+    } catch (error) {
+        res.status(500).json({message: "Error updating event" });
+    }
+})
+
 
 //--------------------DELETE EVENT ROUTE---------------------------------
 
 router.delete("/:eventId", async (req, res) => {
+
   try {
     await Event.findByIdAndDelete(req.params.eventId);
     res.status(202).json({ message: "event deleted" });
@@ -70,6 +73,7 @@ router.delete("/:eventId", async (req, res) => {
       res.status(500).json({ error: "error deleting event", error });
   }
 });
+
 
 // ------ RANDOM FILM ROUTE --------
 
