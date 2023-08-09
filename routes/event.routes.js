@@ -45,10 +45,15 @@ router.get("/:eventId", async (req, res) => {
 
 router.put("/:eventId", async (req, res) => {
     try {
-        const updatedEvent = await Event.findByIdAndUpdate(req.params.eventId);
+
+        const eventId = req.params.eventId;
+        const updatedEventData = req.body;
+
+        const updatedEvent = await Event.findByIdAndUpdate(eventId, updatedEventData, {new:true});
         res.status(202).json(updatedEvent);
     } catch (error) {
-        res.status(500).json("error updating event", error);
+        console.log(error);
+        res.status(500).json({ error: "Error updating event", message: error.message });
     }
 })
 
