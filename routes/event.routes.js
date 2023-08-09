@@ -19,8 +19,7 @@ router.post("/createEvent", async (req, res) => {
         res.status(201).json(newEvent);
 
     } catch (error) {
-        console.log(error)
-       //res.status(500).json(error);
+        res.status(500).json(error);
     }
 })
 
@@ -29,11 +28,6 @@ router.post("/createEvent", async (req, res) => {
 router.get("/:eventId", async (req, res) => {
     try {
         const event = await Event.findById(req.params.eventId);
-
-        if (!event) {
-            // Event not found, respond with 404 status code
-            return res.status(404).json({ error: "Event not found" });
-        }
         res.status(200).json(event);
 
     } catch (error) {
@@ -52,12 +46,11 @@ router.put("/:eventId", async (req, res) => {
         const updatedEvent = await Event.findByIdAndUpdate(eventId, updatedEventData, {new:true});
         res.status(202).json(updatedEvent);
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: "Error updating event", message: error.message });
+        res.status(500).json({message: "Error updating event" });
     }
 })
 
-//----------------------POST NEW COMMENT ON EVENT ROUTE--------------------
+/* //----------------------POST NEW COMMENT ON EVENT ROUTE--------------------
 
 router.put("/:eventId/:feedbackId", async (req, res) => {
     try {
@@ -67,7 +60,7 @@ router.put("/:eventId/:feedbackId", async (req, res) => {
     } catch (error) {
         res.status(500).json("error adding comment to event", error);
     }
-})
+}) */
 
 //--------------------DELETE EVENT ROUTE---------------------------------
 
