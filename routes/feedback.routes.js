@@ -12,7 +12,7 @@ router.post("/:eventId", async (req, res) => {
     res.status(201).json(newComment);
   } catch (error) {
       console.log(error);
-    res.status(500).json("error creating new comment", error);
+    res.status(500).json({message: "Error creating comment" });
   }
 });
 
@@ -20,11 +20,11 @@ router.post("/:eventId", async (req, res) => {
 
 router.get("/:eventId", async (req, res) => {
     try {
-        const comments = await Feedback.find({ eventId: req.params.eventId });
+        const comments = await Feedback.find({ eventId: req.params.eventId }).populate("userId");
         res.status(200).json(comments);
         
     } catch (error) {
-        res.status(500).json("error displaying comment", error);
+        res.status(500).json({message: "Error displaying comment" });
     }
 })
 
@@ -35,7 +35,7 @@ router.put("/:feedbackId", async (req, res) => {
         const editedComment = await Feedback.findByIdAndUpdate(req.params.feedbackId);
         res.status(202).json(editedComment);
     } catch (error) {
-        res.status(500).json("error updating comment", error);
+        res.status(500).json({message: "Error updating comment" });
     }
 })
 
@@ -47,8 +47,19 @@ router.delete("/feedbackId", async (req, res) => {
         res.status(202),json({message: "comment deleted"});
         
     } catch (error) {
-        res.status(500).json("error deleting comment",error);
+        res.status(500).json({message: "Error deleting comment" });
     }
 })
+
+//----------------------FIND USER ROUTE--------------------------------
+
+/* router.get("/:userId", async (req, res) => {
+    try {
+        const foundUser = await User.findById(req.params.userId);
+        res.status(200).json({message: "user name found"});
+    } catch (error) {
+        console.log(error)
+    }
+}) */
 
 module.exports = router;
