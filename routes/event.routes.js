@@ -2,6 +2,7 @@ const express = require ("express");
 const router = express.Router();
 const Event = require("../models/Event.model");
 const Movie = require("../models/Movie.model");
+const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 //------------------------------CREATE EVENT ROUTE-------------------
 
@@ -19,8 +20,7 @@ router.post("/createEvent", async (req, res) => {
         res.status(201).json(newEvent);
 
     } catch (error) {
-        console.log(error)
-       //res.status(500).json(error);
+        res.status(500).json(error);
     }
 })
 
@@ -29,11 +29,6 @@ router.post("/createEvent", async (req, res) => {
 router.get("/:eventId", async (req, res) => {
     try {
         const event = await Event.findById(req.params.eventId);
-
-        if (!event) {
-            // Event not found, respond with 404 status code
-            return res.status(404).json({ error: "Event not found" });
-        }
         res.status(200).json(event);
 
     } catch (error) {
@@ -52,18 +47,18 @@ router.put("/:eventId", async (req, res) => {
         const updatedEvent = await Event.findByIdAndUpdate(eventId, updatedEventData, {new:true});
         res.status(202).json(updatedEvent);
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: "Error updating event", message: error.message });
+        res.status(500).json({message: "Error updating event" });
     }
 })
-
 
 
 //--------------------DELETE EVENT ROUTE---------------------------------
 
 router.delete("/:eventId", async (req, res) => {
     try {
-        await Event.findByIdAndDelete(req.params.eventId);
+        await Event.findByIdAndDelete(eventId);
+
+
         res.status(202).json({message: "event deleted"});
 
     } catch (error) {
