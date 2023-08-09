@@ -18,10 +18,10 @@ router.post("/:eventId", async (req, res) => {
 
 //---------------------------DISPLAY COMMENT ROUTE--------------------
 
-router.get("/:feedbackId", async (req, res) => {
+router.get("/:eventId", async (req, res) => {
     try {
-        const comment = await Feedback.findById(req.params.feedbackId);
-        res.status(200).json(comment);
+        const comments = await Feedback.find({ eventId: req.params.eventId });
+        res.status(200).json(comments);
         
     } catch (error) {
         res.status(500).json("error displaying comment", error);
