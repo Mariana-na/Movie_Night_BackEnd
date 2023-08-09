@@ -14,6 +14,7 @@ router.post("/createEvent", async (req, res) => {
           eventLocation: payload.where,
           //attendees: payload.who,
           recipeId: payload.randomMeal.idMeal,
+          userId: payload.userId,
         });
         res.status(201).json(newEvent);
 
@@ -28,6 +29,11 @@ router.post("/createEvent", async (req, res) => {
 router.get("/:eventId", async (req, res) => {
     try {
         const event = await Event.findById(req.params.eventId);
+
+        if (!event) {
+            // Event not found, respond with 404 status code
+            return res.status(404).json({ error: "Event not found" });
+        }
         res.status(200).json(event);
 
     } catch (error) {
@@ -39,12 +45,19 @@ router.get("/:eventId", async (req, res) => {
 
 router.put("/:eventId", async (req, res) => {
     try {
-        const updatedEvent = await Event.findByIdAndUpdate(req.params.eventId);
+
+        const eventId = req.params.eventId;
+        const updatedEventData = req.body;
+
+        const updatedEvent = await Event.findByIdAndUpdate(eventId, updatedEventData, {new:true});
         res.status(202).json(updatedEvent);
     } catch (error) {
-        res.status(500).json("error updating event", error);
+        console.log(error);
+        res.status(500).json({ error: "Error updating event", message: error.message });
     }
 })
+
+
 
 //--------------------DELETE EVENT ROUTE---------------------------------
 
