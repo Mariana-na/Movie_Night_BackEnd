@@ -2,6 +2,7 @@ const express = require ("express");
 const router = express.Router();
 const Event = require("../models/Event.model");
 const Movie = require("../models/Movie.model");
+const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 //------------------------------CREATE EVENT ROUTE-------------------
 
@@ -50,14 +51,14 @@ router.put("/:eventId", async (req, res) => {
     }
 })
 
-//----------------------POST NEW COMMENT ON EVENT ROUTE--------------------
-
 
 //--------------------DELETE EVENT ROUTE---------------------------------
 
 router.delete("/:eventId", async (req, res) => {
     try {
-        await Event.findByIdAndDelete(req.params.eventId);
+        await Event.findByIdAndDelete(eventId);
+
+
         res.status(202).json({message: "event deleted"});
 
     } catch (error) {
