@@ -14,6 +14,7 @@ router.post("/createEvent", async (req, res) => {
           eventLocation: payload.where,
           //attendees: payload.who,
           recipeId: payload.randomMeal.idMeal,
+          userId: payload.userId,
         });
         res.status(201).json(newEvent);
 
@@ -28,6 +29,11 @@ router.post("/createEvent", async (req, res) => {
 router.get("/:eventId", async (req, res) => {
     try {
         const event = await Event.findById(req.params.eventId);
+
+        if (!event) {
+            // Event not found, respond with 404 status code
+            return res.status(404).json({ error: "Event not found" });
+        }
         res.status(200).json(event);
 
     } catch (error) {
@@ -43,6 +49,18 @@ router.put("/:eventId", async (req, res) => {
         res.status(202).json(updatedEvent);
     } catch (error) {
         res.status(500).json("error updating event", error);
+    }
+})
+
+//----------------------POST NEW COMMENT ON EVENT ROUTE--------------------
+
+router.put("/:eventId/:feedbackId", async (req, res) => {
+    try {
+        const {eventId, feedbackId} = req.params;
+        const eventWithComment = await Event.findByIdAndUpdate(eventId, {$push: {feedback: feedbackId}});
+        res.status(200).json({ message: 'Feedback added to event' });
+    } catch (error) {
+        res.status(500).json("error adding comment to event", error);
     }
 })
 
