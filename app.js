@@ -27,8 +27,6 @@ app.use("/event", eventRoutes);
 const feedbackRoutes = require("./routes/feedback.routes");
 app.use("/feedback", feedbackRoutes);
 
-/* const userRoutes = require("./routes/user.routes");
-app.use("/user", userRoutes); */
 
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes

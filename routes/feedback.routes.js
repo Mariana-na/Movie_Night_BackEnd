@@ -62,15 +62,4 @@ router.delete("/feedbackId", async (req, res) => {
     }
 })
 
-//----------------------FIND USER ROUTE--------------------------------
-
-/* router.get("/:userId", async (req, res) => {
-    try {
-        const foundUser = await User.findById(req.params.userId);
-        res.status(200).json({message: "user name found"});
-    } catch (error) {
-        console.log(error)
-    }
-}) */
-
 module.exports = router;

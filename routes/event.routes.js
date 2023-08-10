@@ -82,32 +82,4 @@ router.get("/randomMovie", async (req, res) => {
   }
 });
 
-//--------------------ATTENDING/NOT ATTENDING ROUTES--------------------
-
-router.put("/:eventId/attending", async (req, res) => {
-  try {
-    const event = await Event.findByIdAndUpdate(
-      req.params.eventId,
-      { $inc: { attending: 1 }, $inc: { attendees: req.user.id } },
-      { new: true }
-    );
-    res.json({ attendingCount: event.attending });
-  } catch (error) {
-    res.status(500).json({ error: "Error posting attending count" });
-  }
-});
-
-router.put("/:eventId/notAttending", async (req, res) => {
-  try {
-    const event = await Event.findByIdAndUpdate(
-      req.params.eventId,
-      { $inc: { notAttending: 1 }, $pull: { attendees: req.user.id } },
-      { new: true }
-    );
-    res.json({ notAttendingCount: event.notAttending });
-  } catch (error) {
-    res.status(500).json({ error: "Error posting not attending count" });
-  }
-});
-
 module.exports = router;
