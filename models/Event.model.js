@@ -13,8 +13,19 @@ const eventSchema = new Schema({
   filmId: {
     type: String,
   },
-  recipeId: {
-    type: String,
+
+  randomMeal: {
+    strMeal: { type: String, required: true },
+    strArea: { type: String, required: true },
+    strSource: { type: String, required: true },
+    strYouTube: { type: String },
+  },
+  randomMovie: {
+    name: { type: String, required: true },
+    datePublished: { type: String, required: true },
+    genre: { type: [String], required: true },
+    image: { type: String, required: true },
+    description: { type: String, required: true },
   },
   eventDate: {
     type: String,
