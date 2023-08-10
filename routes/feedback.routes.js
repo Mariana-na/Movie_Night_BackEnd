@@ -1,6 +1,7 @@
 const express = require ("express");
 const router = express.Router();
 const Feedback = require ("../models/Feedback.model");
+const User = require ("../models/User.model");
 
 //-------------------------CREATE COMMENT ROUTE-------------------
 
@@ -8,7 +9,17 @@ router.post("/:eventId", async (req, res) => {
   try {
     const { eventId } = req.params;
     const { comment, userId } = req.body;
-    const newComment = await Feedback.create({ eventId, comment, userId });
+
+    const user = await User.findById(userId);
+
+    const newCommentData = {
+        eventId,
+        userId,
+        name: user.name,
+        comment,
+    };
+
+    const newComment = await Feedback.create(newCommentData);
     res.status(201).json(newComment);
   } catch (error) {
       console.log(error);
@@ -20,7 +31,7 @@ router.post("/:eventId", async (req, res) => {
 
 router.get("/:eventId", async (req, res) => {
     try {
-        const comments = await Feedback.find({ eventId: req.params.eventId }).populate("userId");
+        const comments = await Feedback.find({ eventId: req.params.eventId });
         res.status(200).json(comments);
         
     } catch (error) {

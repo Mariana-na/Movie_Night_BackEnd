@@ -1,4 +1,4 @@
-const express = require ("express");
+/* const express = require ("express");
 const router = express.Router();
 const Feedback = require ("../models/Feedback.model");
 const User = require ("../models/User.model");
@@ -13,4 +13,6 @@ router.get("/:userId", async (req, res) => {
     } catch (error) {
         console.log(error)
     }
-})
+}) 
+
+module.exports = router;*/
