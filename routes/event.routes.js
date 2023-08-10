@@ -29,21 +29,14 @@ router.post("/createEvent", async (req, res) => {
 //---------------------------SHOW AN EVENT ROUTE------------------------
 
 router.get("/:eventId", async (req, res) => {
+  try {
+      const event = await Event.findById(req.params.eventId);
+      res.status(200).json(event);
 
-    try {
-        const event = await Event.findById(req.params.eventId);
-        res.status(200).json(event);
-
-
-    if (!event) {
-      // Event not found, respond with 404 status code
-      return res.status(404).json({ error: "Event not found" });
-    }
-    res.status(200).json(event);
   } catch (error) {
-      res.status(500).json({ error: "error displaying event", error });
+      res.status(500).json({message: "Error displaying event" });
   }
-});
+})
 
 //--------------------EDIT EVENT ROUTE----------------------------------
 
@@ -70,7 +63,7 @@ router.delete("/:eventId", async (req, res) => {
     await Event.findByIdAndDelete(req.params.eventId);
     res.status(202).json({ message: "event deleted" });
   } catch (error) {
-      res.status(500).json({ error: "error deleting event", error });
+      res.status(500).json({ error: "error deleting event" });
   }
 });
 
@@ -86,34 +79,6 @@ router.get("/randomMovie", async (req, res) => {
   } catch (error) {
       console.log(error);
     res.status(500).json({ error: "Could not retrieve a random movie" });
-  }
-});
-
-//--------------------ATTENDING/NOT ATTENDING ROUTES--------------------
-
-router.put("/:eventId/attending", async (req, res) => {
-  try {
-    const event = await Event.findByIdAndUpdate(
-      req.params.eventId,
-      { $inc: { attending: 1 }, $inc: { attendees: req.user.id } },
-      { new: true }
-    );
-    res.json({ attendingCount: event.attending });
-  } catch (error) {
-    res.status(500).json({ error: "Error posting attending count" });
-  }
-});
-
-router.put("/:eventId/notAttending", async (req, res) => {
-  try {
-    const event = await Event.findByIdAndUpdate(
-      req.params.eventId,
-      { $inc: { notAttending: 1 }, $pull: { attendees: req.user.id } },
-      { new: true }
-    );
-    res.json({ notAttendingCount: event.notAttending });
-  } catch (error) {
-    res.status(500).json({ error: "Error posting not attending count" });
   }
 });
 
