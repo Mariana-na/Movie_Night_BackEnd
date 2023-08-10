@@ -1,6 +1,7 @@
 const express = require ("express");
 const router = express.Router();
 const Feedback = require ("../models/Feedback.model");
+const User = require ("../models/User.model");
 
 //-------------------------CREATE COMMENT ROUTE-------------------
 
@@ -8,23 +9,33 @@ router.post("/:eventId", async (req, res) => {
   try {
     const { eventId } = req.params;
     const { comment, userId } = req.body;
-    const newComment = await Feedback.create({ eventId, comment, userId });
+
+    const user = await User.findById(userId);
+
+    const newCommentData = {
+        eventId,
+        userId,
+        name: user.name,
+        comment,
+    };
+
+    const newComment = await Feedback.create(newCommentData);
     res.status(201).json(newComment);
   } catch (error) {
       console.log(error);
-    res.status(500).json("error creating new comment", error);
+    res.status(500).json({message: "Error creating comment" });
   }
 });
 
 //---------------------------DISPLAY COMMENT ROUTE--------------------
 
-router.get("/:feedbackId", async (req, res) => {
+router.get("/:eventId", async (req, res) => {
     try {
-        const comment = await Feedback.findById(req.params.feedbackId);
-        res.status(200).json(comment);
+        const comments = await Feedback.find({ eventId: req.params.eventId });
+        res.status(200).json(comments);
         
     } catch (error) {
-        res.status(500).json("error displaying comment", error);
+        res.status(500).json({message: "Error displaying comment" });
     }
 })
 
@@ -35,7 +46,7 @@ router.put("/:feedbackId", async (req, res) => {
         const editedComment = await Feedback.findByIdAndUpdate(req.params.feedbackId);
         res.status(202).json(editedComment);
     } catch (error) {
-        res.status(500).json("error updating comment", error);
+        res.status(500).json({message: "Error updating comment" });
     }
 })
 
@@ -47,7 +58,7 @@ router.delete("/feedbackId", async (req, res) => {
         res.status(202),json({message: "comment deleted"});
         
     } catch (error) {
-        res.status(500).json("error deleting comment",error);
+        res.status(500).json({message: "Error deleting comment" });
     }
 })
 
