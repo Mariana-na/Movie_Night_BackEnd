@@ -7,66 +7,73 @@ const { isAuthenticated } = require("../middleware/jwt.middleware");
 //------------------------------CREATE EVENT ROUTE-------------------
 
 router.post("/createEvent", async (req, res) => {
-
-    const payload = req.body;
-    try {
-        const newEvent = await Event.create({
-            eventName: payload.eventName,
-            eventDate: payload.when,
-          eventLocation: payload.where,
-          //attendees: payload.who,
-          recipeId: payload.randomMeal.idMeal,
-          userId: payload.userId,
-        });
-        res.status(201).json(newEvent);
-
-    } catch (error) {
-        res.status(500).json(error);
-    }
-})
-
+  const payload = req.body;
+  try {
+    const newEvent = await Event.create({
+      eventName: payload.eventName,
+      eventDate: payload.when,
+      eventLocation: payload.where,
+      //attendees: payload.who,
+      randomMeal: payload.randomMeal,
+      randomMovie: payload.randomMovie,
+      userId: payload.userId,
+    });
+    res.status(201).json(newEvent);
+  } catch (error) {
+    console.log("create event error", error);
+    res.status(500).json(error);
+  }
+});
 
 //---------------------------SHOW AN EVENT ROUTE------------------------
 
 router.get("/:eventId", async (req, res) => {
   try {
-      const event = await Event.findById(req.params.eventId);
-      res.status(200).json(event);
 
+    const event = await Event.findById(req.params.eventId);
+
+    if (!event) {
+      // Event not found, respond with 404 status code
+      return res.status(404).json({ error: "Event not found" });
+    }
+
+    res.status(200).json(event);
   } catch (error) {
-      res.status(500).json({message: "Error displaying event" });
+    res.status(500).json({ error: "Error displaying event" });
+
   }
 })
 
 //--------------------EDIT EVENT ROUTE----------------------------------
 
 router.put("/:eventId", async (req, res) => {
+  try {
+    const eventId = req.params.eventId;
+    const updatedEventData = req.body;
 
-    try {
-
-        const eventId = req.params.eventId;
-        const updatedEventData = req.body;
-
-        const updatedEvent = await Event.findByIdAndUpdate(eventId, updatedEventData, {new:true});
-        res.status(202).json(updatedEvent);
-    } catch (error) {
-        res.status(500).json({message: "Error updating event" });
-    }
-})
-
+    const updatedEvent = await Event.findByIdAndUpdate(
+      eventId,
+      updatedEventData,
+      { new: true }
+    );
+    res.status(202).json(updatedEvent);
+  } catch (error) {
+    res.status(500).json({ message: "Error updating event" });
+  }
+});
 
 //--------------------DELETE EVENT ROUTE---------------------------------
 
 router.delete("/:eventId", async (req, res) => {
-
   try {
     await Event.findByIdAndDelete(req.params.eventId);
     res.status(202).json({ message: "event deleted" });
   } catch (error) {
-      res.status(500).json({ error: "error deleting event" });
+
+    res.status(500).json({ error: "error deleting event"});
+
   }
 });
-
 
 // ------ RANDOM FILM ROUTE --------
 
@@ -77,9 +84,10 @@ router.get("/randomMovie", async (req, res) => {
     );
     res.status(200).json({ movie: movie });
   } catch (error) {
-      console.log(error);
+    console.log(error);
     res.status(500).json({ error: "Could not retrieve a random movie" });
   }
 });
+
 
 module.exports = router;
