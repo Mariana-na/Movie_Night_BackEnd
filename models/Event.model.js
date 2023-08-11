@@ -18,7 +18,7 @@ const eventSchema = new Schema({
     strMeal: { type: String, required: true },
     strArea: { type: String, required: true },
     strSource: { type: String, required: true },
-    strYouTube: { type: String },
+    strMealThumb: { type: String },
   },
   randomMovie: {
     name: { type: String, required: true },
